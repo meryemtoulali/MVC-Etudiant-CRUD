@@ -19,6 +19,10 @@ public class TableModel extends AbstractTableModel{
 	public TableModel(List<Etudiant> liste){
 		this.listeEtudiants = liste;
 	}
+	
+	public void setListeEtudiants(List<Etudiant> liste) {
+		this.listeEtudiants = liste;
+	}
 
 	@Override
 	public int getColumnCount() {
@@ -43,7 +47,7 @@ public class TableModel extends AbstractTableModel{
 		return listeEtudiants.size();
 	}
 
-	// this method is called to set the value of each cell
+	// this method is called to get the value of each cell
 	@Override
 	public Object getValueAt(int row, int column) {
 		Etudiant entity = listeEtudiants.get(row);
@@ -60,6 +64,38 @@ public class TableModel extends AbstractTableModel{
 				return entity.getTelephone();
 		}
 		return null;
+	}
+	
+	@Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+    {
+		Etudiant row = listeEtudiants.get(rowIndex);
+        if(0 == columnIndex) {
+            row.setId((Integer) aValue);
+        }
+        else if(1 == columnIndex) {
+            row.setCNE((String) aValue);
+        }
+        else if(2 == columnIndex) {
+            row.setNom((String) aValue);
+        }
+        else if(3 == columnIndex) {
+            row.setNote((double) aValue);
+        }
+        else if(4 == columnIndex) {
+            row.setTelephone((String) aValue);
+        }
+        
+        fireTableCellUpdated(rowIndex, columnIndex);
+
+    }
+	
+	
+	
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex)
+	{
+		return true;
 	}
 	
 	

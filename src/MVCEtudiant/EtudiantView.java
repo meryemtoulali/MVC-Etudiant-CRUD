@@ -2,9 +2,16 @@ package MVCEtudiant;
 import java.lang.String;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
+
+import net.proteanit.sql.DbUtils;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,6 +24,9 @@ public class EtudiantView {
 	private AbstractTableModel model;
 	private EtudiantController controller;
 	private List<Etudiant> listeEtudiants;
+	
+	
+
 	
 //	void printEtudiant(String CNE, int no, String nom, double note, String telephone) {
 //		System.out.println("Etudiant : \n");
@@ -75,6 +85,7 @@ public class EtudiantView {
 	    bClear = new JButton("Clear");
 	    bClear.setBounds(50, 350, 100, 40);
 	    
+	    
 	    // button click events
 	    bAjouter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -103,10 +114,76 @@ public class EtudiantView {
 	    table = new JTable();
 	    model = new TableModel(listeEtudiants);
 	    table.setModel(model);
+	    table.getModel().addTableModelListener(new TableModelListener() {
+	    	@Override
+	    	public void tableChanged(TableModelEvent e) {
+    		  int row = e.getFirstRow();
+    		  int column = e.getColumn();
+    		  TableModel model = (TableModel)e.getSource();
+    		  //Object data = model.getValueAt(row, column);
+    		  Etudiant etudiant = new Etudiant((int) model.getValueAt(row, 0), //id
+    				  (String) model.getValueAt(row, 1), // cne
+    				  (String) model.getValueAt(row, 2), //nom
+    				  (double) model.getValueAt(row, 3), //note
+    				  (String) model.getValueAt(row, 4)); //telephone
+    			controller.updateEtudiant(etudiant);
+    			clear();
+    			setListeEtudiants(controller.listEtudiants());
+    			afficher();
+    			refreshTable();
+    		}
+        });
 	    
-	    	    
+	    // table search
+	    
+	    final TableRowSorter<TableModel> rowSorter
+	    = new TableRowSorter<>((TableModel)table.getModel());
+		
+		final JTextField tfFilter = new JTextField();
+		tfFilter.setBounds(400, 50, 200, 30);
+
+	    JButton bFilter = new JButton("Recherche");
+		bFilter.setBounds(630, 50, 100, 30);
+
+
+	    table.setRowSorter(rowSorter);
+	    
+	    tfFilter.getDocument().addDocumentListener(new DocumentListener(){
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = tfFilter.getText();
+
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = tfFilter.getText();
+
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+
+	    
+	    
+	    
 	    JScrollPane scrol = new JScrollPane(table);
-	    scrol.setBounds(400,30,450,400);
+	    scrol.setBounds(400,100,450,300);
 	    
 	    	    
 	    //table selection shenanigans
@@ -174,6 +251,10 @@ public class EtudiantView {
 	    frame.add(bSupprimer);
 	    frame.add(bClear);
 	    
+	    //add search
+	    frame.add(tfFilter);
+	    frame.add(bFilter);
+	    
 	    
 	    
 	    
@@ -200,6 +281,25 @@ public class EtudiantView {
 	private void refreshTable() {
 		model = new TableModel(listeEtudiants);
 	    table.setModel(model);
+	    table.getModel().addTableModelListener(new TableModelListener() {
+	    	@Override
+	    	public void tableChanged(TableModelEvent e) {
+    		  int row = e.getFirstRow();
+    		  int column = e.getColumn();
+    		  TableModel model = (TableModel)e.getSource();
+    		  //Object data = model.getValueAt(row, column);
+    		  Etudiant etudiant = new Etudiant((int) model.getValueAt(row, 0), //id
+    				  (String) model.getValueAt(row, 1), // cne
+    				  (String) model.getValueAt(row, 2), //nom
+    				  (double) model.getValueAt(row, 3), //note
+    				  (String) model.getValueAt(row, 4)); //telephone
+    			controller.updateEtudiant(etudiant);
+    			clear();
+    			setListeEtudiants(controller.listEtudiants());
+    			afficher();
+    			refreshTable();
+    		}
+        });
 	}
 	
 	private void bAjouterAction(ActionEvent e) {
@@ -255,7 +355,7 @@ public class EtudiantView {
 		tfNom.setText("");
 		tfNote.setText("");
 		tfTelephone.setText("");
-				
+	
 	}
 	
 	
