@@ -48,42 +48,57 @@ public class EtudiantView {
 	public void start() {
 		frame = new JFrame("My First GUI");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.setSize(900,500);
-	    
+	    frame.setSize(1200,600);
+	    frame.getContentPane().setBackground(new java.awt.Color(255, 255, 255));
+
+	    JLabel lTitre = new JLabel("Gestion des étudiants");
+	    lTitre.setFont(new Font("Segoe UI", Font.PLAIN, 25));
+	    lTitre.setBounds(50, 50, 300, 30);
 	    JLabel lId = new JLabel("Id :");
-	    lId.setBounds(50, 50, 80, 30);
+	    lId.setBounds(50, 100, 80, 30);
 	    JLabel lCNE = new JLabel("CNE :");
-	    lCNE.setBounds(50, 90, 80, 30);
+	    lCNE.setBounds(50, 140, 80, 30);
 	    JLabel lNom = new JLabel("Nom :");
-	    lNom.setBounds(50, 130, 80, 30);
+	    lNom.setBounds(50, 180, 80, 30);
 	    JLabel lNote = new JLabel("Note :");
-	    lNote.setBounds(50, 170, 80, 30);
+	    lNote.setBounds(50, 220, 80, 30);
 	    JLabel lTelephone = new JLabel("Telephone :");
-	    lTelephone.setBounds(50, 210, 80, 30);
+	    lTelephone.setBounds(50, 260, 80, 30);
 	    
 	    tfId = new JTextField();
-	    tfId.setBounds(160, 50, 200, 30);
+	    tfId.setBounds(160, 100, 210, 30);
 	    tfCNE = new JTextField();
-	    tfCNE.setBounds(160, 90, 200, 30);
+	    tfCNE.setBounds(160, 140, 210, 30);
 	    tfNom = new JTextField();
-	    tfNom.setBounds(160, 130, 200, 30);
+	    tfNom.setBounds(160, 180, 210, 30);
 	    tfNote = new JTextField();
-	    tfNote.setBounds(160, 170, 200, 30);
+	    tfNote.setBounds(160, 220, 210, 30);
 	    tfTelephone = new JTextField();
-	    tfTelephone.setBounds(160, 210, 200, 30);
+	    tfTelephone.setBounds(160, 260, 210, 30);
 	    
 	    
 	    
 	    // buttons
 	    
 	    bAjouter = new JButton("Ajouter");
-	    bAjouter.setBounds(50, 300, 100, 40);
-	    bModifier = new JButton("Modifier");
-	    bModifier.setBounds(160, 300, 100, 40);
+	    bAjouter.setBounds(50, 340, 100, 40);
+	    bAjouter.setBackground(Color.blue);
+	    bAjouter.setBackground(new java.awt.Color(53, 129, 200));
+	    bAjouter.setForeground(Color.white);
+//	    bAjouter.setBorderPainted(false);
+//	    bAjouter.setFocusPainted(false);
+//	    bAjouter.setBorder(BorderFactory.createLineBorder(Color.red));
+	   
+
+	    //bModifier = new JButton("Modifier");
+	    //bModifier.setBounds(160, 300, 100, 40);
 	    bSupprimer = new JButton("Supprimer");
-	    bSupprimer.setBounds(270, 300, 100, 40);
-	    bClear = new JButton("Clear");
-	    bClear.setBounds(50, 350, 100, 40);
+	    bSupprimer.setBounds(160, 340, 100, 40);
+	    bSupprimer.setBackground(new java.awt.Color(235, 105, 45));
+	    bSupprimer.setForeground(Color.white);
+	    bClear = new JButton("Effacer");
+	    bClear.setBounds(270, 340, 100, 40);
+	    bClear.setBackground(new java.awt.Color(235, 244, 247));
 	    
 	    
 	    // button click events
@@ -92,11 +107,11 @@ public class EtudiantView {
             	bAjouterAction(e);
             }
         });
-	    bModifier.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	bModifierAction(e);
-            }
-        });
+//	    bModifier.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//            	bModifierAction(e);
+//            }
+//        });
 	    bSupprimer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	bSupprimerAction(e);
@@ -140,10 +155,12 @@ public class EtudiantView {
 	    = new TableRowSorter<>((TableModel)table.getModel());
 		
 		final JTextField tfFilter = new JTextField();
-		tfFilter.setBounds(400, 50, 200, 30);
+		tfFilter.setBounds(550, 50, 250, 30);
+		JLabel lbFilter = new JLabel("Rechercher :");
+		lbFilter.setBounds(450,50,100,30);
 
-	    JButton bFilter = new JButton("Recherche");
-		bFilter.setBounds(630, 50, 100, 30);
+	    //JButton bFilter = new JButton("Recherche");
+		//bFilter.setBounds(630, 50, 100, 30);
 
 
 	    table.setRowSorter(rowSorter);
@@ -178,12 +195,23 @@ public class EtudiantView {
             }
 
         });
+	    
+	    //table style
+	    table.setRowHeight(25);
+	    table.setShowGrid(true);
+	    table.setGridColor(Color.lightGray);
+	    table.setSelectionBackground(new java.awt.Color(188, 218, 245));
+        table.setSelectionForeground(Color.BLACK);
+        
+
+
+
 
 	    
 	    
 	    
 	    JScrollPane scrol = new JScrollPane(table);
-	    scrol.setBounds(400,100,450,300);
+	    scrol.setBounds(450,100,700,400);
 	    
 	    	    
 	    //table selection shenanigans
@@ -192,7 +220,7 @@ public class EtudiantView {
 	    
 	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
 	        public void valueChanged(ListSelectionEvent e) {
-	          String selectedData = null;
+	          //String selectedData = null;
 
 	          int[] selectedRows = table.getSelectedRows();
 	          //int[] selectedColumns = table.getSelectedColumns();
@@ -232,6 +260,7 @@ public class EtudiantView {
 	    
 	        
 	    //add labels to frame
+	    frame.add(lTitre);
 	    frame.add(lId);
 	    frame.add(lCNE);
 	    frame.add(lNom);
@@ -247,13 +276,14 @@ public class EtudiantView {
 	    
 	    //add buttons
 	    frame.add(bAjouter);
-	    frame.add(bModifier);
+	    //frame.add(bModifier);
 	    frame.add(bSupprimer);
 	    frame.add(bClear);
 	    
 	    //add search
 	    frame.add(tfFilter);
-	    frame.add(bFilter);
+	    //frame.add(bFilter);
+	    frame.add(lbFilter);
 	    
 	    
 	    
@@ -322,19 +352,19 @@ public class EtudiantView {
 	
 	
 	
-	private void bModifierAction(ActionEvent e) {
-		int id = Integer.parseInt(tfId.getText());
-		String CNE = tfCNE.getText();
-		String nom = tfNom.getText();
-		double note = Double.parseDouble(tfNote.getText());
-		String telephone = tfTelephone.getText();
-		Etudiant etudiant = new Etudiant(id, CNE, nom, note, telephone);
-		controller.updateEtudiant(etudiant);
-		clear();
-		setListeEtudiants(controller.listEtudiants());
-		afficher();
-		refreshTable();
-	}
+//	private void bModifierAction(ActionEvent e) {
+//		int id = Integer.parseInt(tfId.getText());
+//		String CNE = tfCNE.getText();
+//		String nom = tfNom.getText();
+//		double note = Double.parseDouble(tfNote.getText());
+//		String telephone = tfTelephone.getText();
+//		Etudiant etudiant = new Etudiant(id, CNE, nom, note, telephone);
+//		controller.updateEtudiant(etudiant);
+//		clear();
+//		setListeEtudiants(controller.listEtudiants());
+//		afficher();
+//		refreshTable();
+//	}
 	
 	private void bSupprimerAction(ActionEvent e) {
 		int id = Integer.parseInt(tfId.getText());
